@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.androidpn.server.dao.ApnUserMapper">
+
+	<!--实体映射-->
+	<resultMap id="apnUserResultMap" type="org.androidpn.server.model.User">
+		<!---->
+		<result column="id"  property="id" />
+		<!---->
+		<result column="username"  property="username" />
+		<!---->
+		<result column="password"  property="password" />
+		<!---->
+		<result column="email"  property="email" />
+		<!---->
+		<result column="name"  property="name" />
+		<!---->
+		<result column="created_date"  property="createdDate" />
+		<!---->
+		<result column="updated_date"  property="updatedDate" />
+		<!---->
+		<result column="online"  property="online" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	id,	username,	password,	email,	name,	created_date,	updated_date,	online
+	</sql>
+
+
+	<!-- 查询条件-->
+	<sql id="modelwheresql">
+	<where>
+
+			<if test="id != null and id != '' ">
+				 and id = #{id}
+			</if>
+			<if test="username != null and username != '' ">
+				 and username = #{username}
+			</if>
+			<if test="password != null and password != '' ">
+				 and password = #{password}
+			</if>
+			<if test="email != null and email != '' ">
+				 and email = #{email}
+			</if>
+			<if test="name != null and name != '' ">
+				 and name = #{name}
+			</if>
+			<if test="createdDate != null and createdDate != '' ">
+				 and created_date = #{createdDate}
+			</if>
+			<if test="updatedDate != null and updatedDate != '' ">
+				 and updated_date = #{updatedDate}
+			</if>
+			<if test="online != null and online != '' ">
+				 and online = #{online}
+			</if>
+
+	</where>
+	</sql>
+
+
+	<sql id="limitsql">
+			<if test="limitStart != null and pageSize != null">
+				 <![CDATA[  
+				 order by id desc limit #{limitStart} , #{pageSize} 
+				 ]]>  
+			</if>
+	</sql>	<!-- 添加 -->
+	<insert id="save" parameterType="org.androidpn.server.model.User">
+		 <selectKey resultType="long" keyProperty="id">
+		 SELECT LAST_INSERT_ID()
+		 </selectKey>
+		 INSERT INTO apn_user
+ 		(username,password,email,name,created_date,updated_date,online) 
+		 VALUES 
+ 		(#{username},#{password},#{email},#{name},#{createdDate},#{updatedDate},#{online}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="org.androidpn.server.model.User">
+		 INSERT INTO apn_user
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="username != null">
+				 username,
+			</if>
+			<if test="password != null">
+				 password,
+			</if>
+			<if test="email != null">
+				 email,
+			</if>
+			<if test="name != null">
+				 name,
+			</if>
+			<if test="createdDate != null">
+				 created_date,
+			</if>
+			<if test="updatedDate != null">
+				 updated_date,
+			</if>
+			<if test="online != null">
+				 online,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null and id!='' ">
+				 #{id},
+			</if>
+			<if test="username!=null and username!='' ">
+				 #{username},
+			</if>
+			<if test="password!=null and password!='' ">
+				 #{password},
+			</if>
+			<if test="email!=null and email!='' ">
+				 #{email},
+			</if>
+			<if test="name!=null and name!='' ">
+				 #{name},
+			</if>
+			<if test="createdDate!=null and createdDate!='' ">
+				 #{createdDate},
+			</if>
+			<if test="updatedDate!=null and updatedDate!='' ">
+				 #{updatedDate},
+			</if>
+			<if test="online!=null and online!='' ">
+				 #{online},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 -->
+	<insert id="saveBatchApnUser" parameterType="java.util.List">
+		 INSERT INTO apn_user
+ 		(username,password,email,name,created_date,updated_date,online) 
+		 VALUES 
+ 		 <foreach collection="list" item="item" index="index" separator="," >  
+ 		(#{item.username},#{item.password},#{item.email},#{item.name},#{item.createdDate},#{item.updatedDate},#{item.online}) 
+ 		 </foreach>
+	</insert>
+
+	<!-- 修 改id-->
+	<update id="updateByPrimaryKey" parameterType="org.androidpn.server.model.User">
+		 UPDATE apn_user
+		 <set> 
+			<if test="username != null">
+				 username = #{username},
+			</if>
+			<if test="password != null">
+				 password = #{password},
+			</if>
+			<if test="email != null">
+				 email = #{email},
+			</if>
+			<if test="name != null">
+				 name = #{name},
+			</if>
+			<if test="createdDate != null">
+				 created_date = #{createdDate},
+			</if>
+			<if test="updatedDate != null">
+				 updated_date = #{updatedDate},
+			</if>
+			<if test="online != null">
+				 online = #{online}
+			</if>
+
+		 </set> 		 WHERE id = #{id}
+	</update>
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey"  resultMap="apnUserResultMap" parameterType="java.lang.Long">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM apn_user
+		 WHERE id = #{id}
+	</select>
+
+	<!-- 刪除 -->
+	<delete  id="delByPrimaryKey" parameterType="java.lang.Long">
+		 delete
+		 FROM apn_user
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 查询  List 查询 -->
+	<select id="queryList" resultMap="apnUserResultMap" parameterType="org.androidpn.server.model.User">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM apn_user
+		  
+		 <include refid="modelwheresql" />
+	</select>
+
+	<!-- 查询 分页总数 -->
+	<select id="queryPageCount"  resultType="java.lang.Integer"  parameterType="org.androidpn.server.model.User">
+		 SELECT
+		 count(1)
+		 FROM apn_user
+		  
+		 <include refid="modelwheresql" />
+	</select>
+	<!-- 查询 分页查询 -->
+	<select id="queryPageList" resultMap="apnUserResultMap"  parameterType="org.androidpn.server.model.User">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM apn_user
+		  
+		 <include refid="modelwheresql" />
+		 <include refid="limitsql" />
+	</select>
+
+</mapper>

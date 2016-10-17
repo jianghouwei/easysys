@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.org.easysys</groupId>
+		<artifactId>easysys</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>com.org.easysys.web</groupId>
+	<artifactId>sys-web</artifactId>
+	<packaging>pom</packaging>
+	<version>${project.version}</version>
+	<name>sys-web</name>
+	<description>sys-web</description>
+	<modules>
+		<module>androidpn-server</module>
+	</modules>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.org.easysys.deps</groupId>
+			<artifactId>sysdeps</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
+</project>
